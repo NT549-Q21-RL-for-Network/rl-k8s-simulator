@@ -49,3 +49,4 @@ artifacts/
 # Local env/config
 .env
 .env.*
+training_summary.json
