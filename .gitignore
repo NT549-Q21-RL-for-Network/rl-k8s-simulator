@@ -1,0 +1,51 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Logs
+*.log
+
+# RL training outputs
+ppo_k8s_logs/
+training_results/
+artifacts/
+
+# Saved models and checkpoints
+*.zip
+*.pth
+*.pt
+*.ckpt
+
+# Figures / generated reports
+*.png
+*.pdf
+
+# Local env/config
+.env
+.env.*
