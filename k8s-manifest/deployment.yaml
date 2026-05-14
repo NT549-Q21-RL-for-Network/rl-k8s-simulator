@@ -15,13 +15,40 @@ spec:
       labels:
         app: rl-agent
     spec:
+      serviceAccountName: rl-agent-sa
       containers:
         - name: rl-agent
-          image: tienphatng237/rl-k8s-simulator:infer-v1
+          image: tienphatng237/rl-k8s-simulator:infer-model-v1
           imagePullPolicy: IfNotPresent
-          args:
-            - "--interval-sec"
-            - "5"
+          env:
+            - name: PROMETHEUS_URL
+              value: "http://10.0.21.10:9090"
+            - name: METRICS_NAMESPACE
+              value: "mini-ecommerce"
+            - name: POD_REGEX
+              value: "^(api-gateway|frontend|inventory-service|order-service|payment-service|product-service|user-service|redis)(-.+)?$"
+            - name: DEPLOYMENT_REGEX
+              value: "^(api-gateway|frontend|inventory-service|order-service|payment-service|product-service|user-service)$"
+            - name: PREFERRED_WORKLOAD
+              value: "product-service"
+            - name: KSM_JOB_REGEX
+              value: ".*kube-state-metrics.*"
+            - name: POLL_INTERVAL_SEC
+              value: "5"
+            - name: DRY_RUN
+              value: "false"
+            - name: ACTION_COOLDOWN_SEC
+              value: "15"
+            - name: MIN_REPLICAS
+              value: "1"
+            - name: MAX_REPLICAS
+              value: "10"
+            - name: ACTION_LOG_PATH
+              value: "/tmp/rl-agent/actions.jsonl"
+            - name: MAX_RPS
+              value: "1000"
+            - name: OUTPUT_DECIMALS
+              value: "4"
           resources:
             requests:
               cpu: "100m"

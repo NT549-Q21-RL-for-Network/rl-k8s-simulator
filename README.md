@@ -140,7 +140,7 @@ Kết quả sẽ nằm ở:
 Workflow: `.github/workflows/docker-build-push.yml`
 
 - Trigger: mỗi lần `push` commit lên bất kỳ branch nào.
-- Registry: `ghcr.io/${OWNER}/${REPO}`.
+- Registry: `docker.io/${DOCKERHUB_USERNAME}/rl-k8s-simulator`.
 - Tags sinh tự động:
   - `sha-<commit_sha>`
   - `<branch-name>`
@@ -149,5 +149,45 @@ Workflow: `.github/workflows/docker-build-push.yml`
 Lệnh pull image sau khi workflow chạy xong:
 
 ```bash
-docker pull ghcr.io/nt549-q21-rl-for-network/rl-k8s-simulator:latest
+docker pull tienphatng237/rl-k8s-simulator:latest
+```
+
+## Deploy model lên Kubernetes 
+
+1. Apply manifest:
+
+```bash
+kubectl apply -k k8s-manifest
+kubectl -n rl-agent rollout status deploy/rl-agent
+kubectl -n rl-agent get pods -o wide
+kubectl -n rl-agent logs deploy/rl-agent -f
+```
+
+Biến môi trường chính trong `k8s-manifest/deployment.yaml`:
+- `PROMETHEUS_URL`: URL Prometheus (ví dụ `http://10.0.21.10:9090`)
+- `METRICS_NAMESPACE`: namespace workload cần theo dõi (mặc định `mini-ecommerce`)
+- `KSM_JOB_REGEX`: regex lọc metric từ kube-state-metrics để tránh đếm trùng series
+- `POLL_INTERVAL_SEC`: chu kỳ lấy metric (giây), hiện là `5`
+- `DRY_RUN`: `true` chỉ log quyết định, `false` mới thực thi action hook
+- `MAX_RPS`: dùng để normalize throughput
+
+2. Ép kéo image mới nhất (khi vừa push image mới):
+
+```bash
+kubectl -n rl-agent rollout restart deploy/rl-agent
+kubectl -n rl-agent rollout status deploy/rl-agent
+```
+
+## Action Log (JSONL)
+
+Khi `DRY_RUN=false`, agent sẽ thực thi action thật (`restart_pod`, `scale_up`, `scale_down`)
+và ghi log theo từng quyết định vào file JSONL trong pod:
+
+- `ACTION_LOG_PATH=/tmp/rl-agent/actions.jsonl`
+
+Lấy log để đối chiếu với load+chaos:
+
+```bash
+POD=$(kubectl -n rl-agent get pods -l app=rl-agent -o jsonpath='{.items[0].metadata.name}')
+kubectl -n rl-agent exec "$POD" -- tail -n 50 /tmp/rl-agent/actions.jsonl
 ```

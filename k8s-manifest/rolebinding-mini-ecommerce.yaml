@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rl-agent-rolebinding
+  namespace: mini-ecommerce
+subjects:
+  - kind: ServiceAccount
+    name: rl-agent-sa
+    namespace: rl-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rl-agent-role
