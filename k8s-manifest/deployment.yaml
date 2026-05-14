@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rl-agent
+  namespace: rl-agent
+  labels:
+    app: rl-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rl-agent
+  template:
+    metadata:
+      labels:
+        app: rl-agent
+    spec:
+      containers:
+        - name: rl-agent
+          image: tienphatng237/rl-k8s-simulator:infer-v1
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--interval-sec"
+            - "5"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
