@@ -32,7 +32,7 @@ htmlcov/
 *.log
 
 # RL training outputs
-ppo_k8s_logs/
+logs/
 training_results/
 artifacts/
 

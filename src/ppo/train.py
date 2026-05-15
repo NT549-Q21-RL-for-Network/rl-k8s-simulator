@@ -118,7 +118,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--num-nodes", type=int, default=3)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--enable-tensorboard", action="store_true")
-    parser.add_argument("--log-dir", type=Path, default=Path("ppo_k8s_logs"))
+    parser.add_argument("--log-dir", type=Path, default=Path("logs/ppo"))
     parser.add_argument("--output-dir", type=Path, default=Path("training_results/ppo"))
     return parser.parse_args()
 
