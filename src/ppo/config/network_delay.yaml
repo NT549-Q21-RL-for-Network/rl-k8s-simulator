@@ -1,0 +1,9 @@
+scenario: network_delay
+timesteps: 100000
+learning_rate: 0.0003
+n_steps: 2048
+batch_size: 64
+gamma: 0.99
+gae_lambda: 0.95
+max_steps: 100
+step_interval_sec: 10

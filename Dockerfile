@@ -24,7 +24,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY --from=builder /opt/venv /opt/venv
-COPY scenario_policies ./scenario_policies
+COPY src ./src
 COPY scripts ./scripts
 COPY models ./models
 
