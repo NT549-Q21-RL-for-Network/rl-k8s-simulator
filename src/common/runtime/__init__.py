@@ -1,4 +1,7 @@
 """Runtime Kubernetes integration components."""
-from .k8s_runtime import K8sMetricsCollector, K8sActionExecutor, K8sSelfHealingAgent
+
+from .metrics_collector import K8sMetricsCollector
+from .action_executor import K8sActionExecutor
+from .agent import K8sSelfHealingAgent
 
 __all__ = ["K8sMetricsCollector", "K8sActionExecutor", "K8sSelfHealingAgent"]
