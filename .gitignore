@@ -35,6 +35,7 @@ htmlcov/
 logs/*
 !logs/.gitkeep
 !logs/ppo/
+logs/ppo/*
 !logs/ppo/.gitkeep
 training_results/
 artifacts/
